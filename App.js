@@ -1,31 +1,47 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Image,
+  Text,
+  View,
+  TextInput,
+  Pressable,
+} from "react-native";
 import { useState } from "react";
+import Loading from "./src/components/Loading";
 
 export default function App() {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [result, setResult] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require("./assets/images/loginIcon.png")}
+        style={styles.image}
+      />
+
       <Text>Welcome {result}</Text>
-      <Text>Name</Text>
+      <Text>Email</Text>
       <TextInput
-        placeholder="Enter Your Name "
+        inputMode="email"
+        placeholder="Enter Your Email "
         style={styles.textInputStyle}
         onChangeText={setName}
         value={name}
       />
-      <Text>Last Name</Text>
+      <Text>Password</Text>
       <TextInput
-        placeholder="Enter Your Last Name"
+        secureTextEntry={true}
+        placeholder="Enter Your Password"
         style={styles.textInputStyle}
         onChangeText={setLastName}
         value={lastName}
       />
       <Pressable
-        onPress={() => setResult(name + " " + lastName)}
+        onPress={() => setIsLoading(true)}
         style={({ pressed }) => [
           {
             backgroundColor: pressed ? "gray" : "lightblue",
@@ -35,6 +51,9 @@ export default function App() {
       >
         <Text style={styles.buttonText}>Save</Text>
       </Pressable>
+      {isLoading ? (
+        <Loading changeIsLoading={() => setIsLoading(false)} />
+      ) : null}
     </View>
   );
 }
@@ -65,4 +84,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
+  image: { width: 100, height: 100 },
 });
