@@ -1,88 +1,19 @@
-import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Image,
-  Text,
-  View,
-  TextInput,
-  Pressable,
-} from "react-native";
-import { useState } from "react";
-import Loading from "./src/components/Loading";
+import React from "react";
+import LoginPage from "./src/screens/LoginPage";
+import SignUpPage from "./src/screens/SignUpPage";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-export default function App() {
-  const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [result, setResult] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+const Stack = createNativeStackNavigator();
 
-  return (
-    <View style={styles.container}>
-      <Image
-        source={require("./assets/images/loginIcon.png")}
-        style={styles.image}
-      />
+const App = () => {
+  return;
+  <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen name="Login" component={LoginPage} />
+      <Stack.Screen name="SignUp" component={SignUpPage} />
+    </Stack.Navigator>
+  </NavigationContainer>;
+};
 
-      <Text>Welcome {result}</Text>
-      <Text>Email</Text>
-      <TextInput
-        inputMode="email"
-        placeholder="Enter Your Email "
-        style={styles.textInputStyle}
-        onChangeText={setName}
-        value={name}
-      />
-      <Text>Password</Text>
-      <TextInput
-        secureTextEntry={true}
-        placeholder="Enter Your Password"
-        style={styles.textInputStyle}
-        onChangeText={setLastName}
-        value={lastName}
-      />
-      <Pressable
-        onPress={() => setIsLoading(true)}
-        style={({ pressed }) => [
-          {
-            backgroundColor: pressed ? "gray" : "lightblue",
-          },
-          styles.button,
-        ]}
-      >
-        <Text style={styles.buttonText}>Save</Text>
-      </Pressable>
-      {isLoading ? (
-        <Loading changeIsLoading={() => setIsLoading(false)} />
-      ) : null}
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  textInputStyle: {
-    borderWidth: 1,
-    width: "80%",
-    height: 50,
-    borderRadius: 10,
-    marginVertical: 10,
-  },
-  button: {
-    borderWidth: 1,
-    width: "80%",
-    height: 50,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttonText: {
-    fontWeight: "bold",
-    color: "white",
-  },
-  image: { width: 100, height: 100 },
-});
+export default App;
