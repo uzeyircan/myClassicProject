@@ -10,8 +10,9 @@ import {
 import { useState } from "react";
 import Loading from "../components/Loading";
 
-const LoginPage = (navigation) => {
+const LoginPage = ({ navigation }) => {
   const [name, setName] = useState("");
+
   const [lastName, setLastName] = useState("");
   const [result, setResult] = useState("");
   const [isLoading, setIsLoading] = useState(false);
