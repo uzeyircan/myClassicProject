@@ -8,63 +8,49 @@ import {
   Pressable,
 } from "react-native";
 import { useState } from "react";
-import Loading from "../components/Loading";
+import { CustomTextInput, Loading, CustomButton } from "../components";
 
 const LoginPage = ({ navigation }) => {
-  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [lastName, setLastName] = useState("");
-  const [result, setResult] = useState("");
+  const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   return (
     <View style={styles.container}>
+      <Text style={styles.welcome}>Welcome</Text>
+
       <Image
         source={require("../../assets/images/loginIcon.png")}
         style={styles.image}
       />
 
-      <Text>Welcome {result}</Text>
-      <Text>Email</Text>
-      <TextInput
-        inputMode="email"
-        placeholder="Enter Your Email "
-        style={styles.textInputStyle}
-        onChangeText={setName}
-        value={name}
+      <CustomTextInput
+        title="Email"
+        isSecureText={false}
+        handleOnChangeText={setEmail}
+        handleValue={email}
+        handlePlaceholder="Enter Your Email"
       />
-      <Text>Password</Text>
-      <TextInput
-        secureTextEntry={true}
-        placeholder="Enter Your Password"
-        style={styles.textInputStyle}
-        onChangeText={setLastName}
-        value={lastName}
+      <CustomTextInput
+        title="Password"
+        isSecureText={true}
+        handleOnChangeText={setPassword}
+        handleValue={password}
+        handlePlaceholder="Enter Your Password"
       />
-      <Pressable
-        onPress={() => setIsLoading(true)}
-        style={({ pressed }) => [
-          {
-            backgroundColor: pressed ? "gray" : "lightblue",
-          },
-          styles.button,
-        ]}
-      >
-        <Text style={styles.buttonText}>Login</Text>
-      </Pressable>
-
-      <Pressable
-        onPress={() => navigation.navigate("SignUp")}
-        style={({ pressed }) => [
-          {
-            backgroundColor: pressed ? "gray" : "lightblue",
-            marginTop: 50,
-          },
-          styles.signupButton,
-        ]}
-      >
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </Pressable>
+      <CustomButton
+        buttonText="Login"
+        setWidth="80%"
+        handleOnPress={() => setIsLoading(true)}
+        buttonColor="gray"
+        pressedButtonColor="lightgray"
+      />
+      <CustomButton
+        buttonText="Sign Up"
+        setWidth="30%"
+        handleOnPress={() => navigation.navigate("SignUp")}
+      />
 
       {isLoading ? (
         <Loading changeIsLoading={() => setIsLoading(false)} />
@@ -76,30 +62,19 @@ export default LoginPage;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "tomato",
     alignItems: "center",
     justifyContent: "center",
   },
-  textInputStyle: {
-    borderWidth: 1,
-    width: "80%",
-    height: 50,
-    borderRadius: 10,
-    marginVertical: 10,
-  },
-  button: {
-    borderWidth: 1,
-    width: "80%",
-    height: 50,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttonText: {
+
+  welcome: {
+    fontSize: 30,
     fontWeight: "bold",
+    marginBottom: 30,
     color: "white",
   },
-  image: { width: 100, height: 100 },
+
+  image: { width: 150, height: 150, marginBottom: 20 },
   signupButton: {
     borderWidth: 1,
     width: "30%",
