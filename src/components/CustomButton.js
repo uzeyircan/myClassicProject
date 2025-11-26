@@ -5,16 +5,16 @@ const CustomButton = ({
   buttonText,
   setWidth,
   handleOnPress,
-  buttonColor,
-  pressedButtonColor,
+  buttonColor, // varsayılan: mavi
+  pressedButtonColor, // varsayılan: gri
 }) => {
   return (
     <Pressable
       onPress={() => handleOnPress()}
       style={({ pressed }) => [
         {
-          backgroundColor: pressed ? { pressedButtonColor } : { buttonColor },
-          width: { setWidth },
+          backgroundColor: pressed ? pressedButtonColor : buttonColor,
+          width: setWidth,
         },
         styles.button,
       ]}

@@ -45,13 +45,15 @@ const LoginPage = ({ navigation }) => {
         buttonText="Login"
         setWidth="80%"
         handleOnPress={() => dispatch(setLogin())}
-        buttonColor="gray"
+        buttonColor="blue"
         pressedButtonColor="lightgray"
       />
       <CustomButton
         buttonText="Sign Up"
         setWidth="30%"
         handleOnPress={() => navigation.navigate("SignUp")}
+        buttonColor="gray"
+        pressedButtonColor="lightgray"
       />
 
       {isLoading ? (
