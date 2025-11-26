@@ -28,16 +28,16 @@ export default CustomButton;
 
 const styles = StyleSheet.create({
   button: {
-    borderWidth: 1,
-
-    height: 50,
-    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 24,
     alignItems: "center",
-    justifyContent: "center",
-    marginTop: 20,
+    alignSelf: "center",
+    marginTop: 24,
   },
   buttonText: {
-    fontWeight: "bold",
-    color: "white",
+    color: "#000000",
+    fontWeight: "600",
+    fontSize: 16,
   },
 });
