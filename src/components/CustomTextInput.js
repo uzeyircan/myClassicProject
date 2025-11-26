@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   inputBoxText: {
+    justifyContent: "center",
     color: "white",
     fontWeight: "bold",
     alignSelf: "flex-start",
