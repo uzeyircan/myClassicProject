@@ -7,8 +7,9 @@ import { setIsloading, setLogin } from "../redux/userSlice";
 import { useState } from "react";
 
 const LoginPage = ({ navigation }) => {
-  const [email, setemail] = useState("");
-  const [password, setpassword] = useState("");
+  const [email, setEmail] = useState("");
+
+  const [password, setPassword] = useState("");
   // userSlice içerisindeki verilerin okunması
   const { isLoading } = useSelector((state) => state.user);
   // userSlice içerisindeki reducer yapılarını kullanma veya veri gönderme
