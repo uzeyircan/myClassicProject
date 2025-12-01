@@ -1,20 +1,16 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Image, Text, View } from "react-native";
 import { CustomTextInput, Loading, CustomButton } from "../components";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  setEmail,
-  setPassword,
-  setIsloading,
-  setLogin,
-} from "../redux/userSlice";
-const LoginPage = ({ navigation }) => {
-  // const [password, setPassword] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [isLoading, setIsLoading] = useState(false),
+import { login } from "../redux/userSlice";
 
+import { useSelector, useDispatch } from "react-redux";
+import { setIsloading, setLogin } from "../redux/userSlice";
+import { useState } from "react";
+
+const LoginPage = ({ navigation }) => {
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
   // userSlice içerisindeki verilerin okunması
-  const { email, password, isLoading } = useSelector((state) => state.user);
+  const { isLoading } = useSelector((state) => state.user);
   // userSlice içerisindeki reducer yapılarını kullanma veya veri gönderme
   const dispatch = useDispatch();
 
@@ -30,21 +26,21 @@ const LoginPage = ({ navigation }) => {
       <CustomTextInput
         title="Email"
         isSecureText={false}
-        handleOnChangeText={(text) => dispatch(setEmail(text))}
+        handleOnChangeText={(text) => setEmail(text)}
         handleValue={email}
         handlePlaceholder="Enter Your Email"
       />
       <CustomTextInput
         title="Password"
         isSecureText={true}
-        handleOnChangeText={(password) => dispatch(setPassword(password))}
+        handleOnChangeText={(password) => setPassword(password)}
         handleValue={password}
         handlePlaceholder="Enter Your Password"
       />
       <CustomButton
         buttonText="Login"
         setWidth="80%"
-        handleOnPress={() => dispatch(setLogin())}
+        handleOnPress={() => dispatch(login({ email, password }))}
         buttonColor="blue"
         pressedButtonColor="lightgray"
       />
