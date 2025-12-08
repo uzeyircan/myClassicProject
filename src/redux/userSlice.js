@@ -1,27 +1,43 @@
+// src/redux/userSlice.js
+
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebaseConfig"; // 🔹 yol tam olarak böyle olmalı
+
+// Firebase user nesnesini sade ve JSON'a uygun hale getiriyoruz
+const mapFirebaseUser = (fbUser) => {
+  if (!fbUser) return null;
+  return {
+    uid: fbUser.uid,
+    email: fbUser.email,
+    displayName: fbUser.displayName ?? null,
+    emailVerified: fbUser.emailVerified,
+    isAnonymous: fbUser.isAnonymous,
+    photoURL: fbUser.photoURL ?? null,
+  };
+};
 
 export const login = createAsyncThunk(
   "user/login",
-  async ({ email, password }) => {
+  async ({ email, password }, { rejectWithValue }) => {
     try {
-      const auth = getAuth();
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
+      const fbUser = userCredential.user;
 
-      const user = userCredential.user;
-      const token = user.stsTokenManager.accesToken;
-      const userData = {
+      // Tokeni güvenli yoldan al
+      const token = await fbUser.getIdToken();
+
+      return {
         token,
-        user: user,
+        user: mapFirebaseUser(fbUser),
       };
-      return userData;
-    } catch (error) {
-      console.log("userSlice 21 line ", error);
-      throw error;
+    } catch (err) {
+      console.log("userSlice login error:", err);
+      return rejectWithValue(err.message || "Login failed");
     }
   }
 );
@@ -32,41 +48,46 @@ const initialState = {
   token: null,
   user: null,
   error: null,
+  email: "",
+  password: "",
 };
 
-export const userSlice = createSlice({
+const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     setEmail: (state, action) => {
-      const loverCaseEmail = action.payload.toLowerCase();
-      state.email = loverCaseEmail;
+      state.email = action.payload.toLowerCase();
     },
     setPassword: (state, action) => {
       state.password = action.payload;
     },
-    setIsloading: (state, action) => {
-      state.isLoading = action.payload;
+    logout: (state) => {
+      state.isAuth = false;
+      state.token = null;
+      state.user = null;
     },
   },
-  extreReducres: (builder) => {
+  extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
         state.isLoading = true;
         state.isAuth = false;
+        state.error = null;
       })
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.auth = true;
-        state.user = action.payload.user;
+        state.isAuth = true;
         state.token = action.payload.token;
+        state.user = action.payload.user;
       })
-      .addCase(login.rejected, (state) => {
+      .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.isAuth = false;
-        state.error = action.error.message;
+        state.error = action.payload || "Login failed";
       });
   },
 });
-export const { setEmail, setPassword, setIsloading } = userSlice.actions;
+
+export const { setEmail, setPassword, logout } = userSlice.actions;
 export default userSlice.reducer;

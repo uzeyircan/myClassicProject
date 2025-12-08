@@ -27,7 +27,7 @@ const LoginPage = ({ navigation }) => {
       <CustomTextInput
         title="Email"
         isSecureText={false}
-        handleOnChangeText={(text) => setEmail(text)}
+        handleOnChangeText={(email) => setEmail(email)}
         handleValue={email}
         handlePlaceholder="Enter Your Email"
       />
